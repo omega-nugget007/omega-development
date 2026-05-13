@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega Development - Contact</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="contact">
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Omega Development</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="nantes-rp.html">Nantes RP</a></li>
+                <li><a href="dcp.html">D.C.P</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="about.html">À propos</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Contactez-nous</h2>
+            <p>Intéressé par nos jeux ? Une idée de collaboration ? Écrivons-nous !</p>
+        </section>
+
+        <section class="content">
+            <div class="container">
+                <h3>Nous Contacter</h3>
+                <p>Que vous soyez un joueur passionné, un partenaire potentiel, ou que vous souhaitiez rejoindre notre équipe, n'hésitez pas à nous contacter. Nous sommes toujours ouverts aux nouvelles opportunités et aux retours de notre communauté.</p>
+                <br>
+                <br>
+                <form id="contact-form">
+                    <label for="name">Nom :</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="subject">Sujet :</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Choisissez un sujet</option>
+                        <option value="feedback">Retour sur nos jeux</option>
+                        <option value="bug">Signalement de bug</option>
+                        <option value="collaboration">Proposition de collaboration</option>
+                        <option value="recruitment">Recrutement</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    
+                    <label for="message">Message :</label>
+                    <textarea id="message" name="message" required placeholder="Dites-nous ce que vous pensez de nos jeux ou comment nous pouvons vous aider..."></textarea>
+                    
+                    <button type="submit" class="btn">Envoyer</button>
+                </form>
+
+                <br>
+                <br>
+
+
+                <div class="contact-info">
+                    <h3>Informations de Contact</h3>
+                    <p><strong>Email :</strong> omegadevelopment@gmail.com</p>
+                    <p><strong>Discord :</strong> https://discord.gg/vedj5c75D</p>
+                    <p><strong>Roblox Group :</strong>https://www.roblox.com/games/108430397650373/Nantes-RP</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Omega Development. Tous droits réservés.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
