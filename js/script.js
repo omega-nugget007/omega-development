@@ -89,10 +89,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const loginResult = document.getElementById('login-result');
     const googleLoginButton = document.getElementById('google-login');
+    const debugContainer = document.getElementById('login-debug');
+
+    const debugLog = (message, type = 'info') => {
+        if (!debugContainer) {
+            return;
+        }
+        const line = document.createElement('div');
+        line.className = `debug-line ${type}`;
+        line.textContent = message;
+        debugContainer.appendChild(line);
+        debugContainer.scrollTop = debugContainer.scrollHeight;
+    };
+
+    const setDebugStatus = (message) => {
+        loginResult.textContent = message;
+        debugLog(message, 'info');
+    };
+
+    setDebugStatus('Initialisation du debug Google...');
 
     const handleCredentialResponse = (response) => {
+        debugLog('handleCredentialResponse appelé', 'info');
         if (!response || !response.credential) {
             loginResult.textContent = 'Erreur de connexion Google. Réessayez.';
+            debugLog('Aucun credential reçu ou réponse invalide', 'error');
             return;
         }
 
@@ -108,16 +129,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!email) {
             loginResult.textContent = 'Impossible de récupérer l’email Google. Vérifiez votre compte et réessayez.';
+            debugLog('Email absent dans le token JWT', 'error');
             return;
         }
 
+        debugLog(`Email détecté : ${email}`, 'success');
         if (isStaffEmail(email)) {
             loginResult.textContent = `Bienvenue Staff (${email}) ! Redirection vers le Panel Staff…`;
+            debugLog('Email identifié comme staff', 'success');
             setTimeout(() => {
                 window.location.href = 'panel-staff.html';
             }, 1100);
         } else {
             loginResult.textContent = `Bienvenue Utilisateur (${email}) ! Redirection vers l'Espace Utilisateur…`;
+            debugLog('Email non staff, redirection vers espace utilisateur', 'success');
             setTimeout(() => {
                 window.location.href = 'espace-utilisateur.html';
             }, 1100);
@@ -125,7 +150,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     const initializeGoogleClient = () => {
+        debugLog('Vérification de la disponibilité de window.google...', 'info');
         if (window.google && window.google.accounts && window.google.accounts.id) {
+            debugLog('SDK Google disponible, initialisation du client...', 'info');
             window.google.accounts.id.initialize({
                 client_id: '388955794215-jsh1ip7578kt53bagihestg7plf5lml6.apps.googleusercontent.com',
                 callback: handleCredentialResponse,
@@ -137,22 +164,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (googleLoginButton) {
                 googleLoginButton.disabled = false;
             }
+            setDebugStatus('Google Identity Services chargé. Cliquez sur le bouton pour continuer.');
+            debugLog('Initialisation du client Google réussie.', 'success');
             return true;
         }
+        debugLog('SDK Google non chargé encore.', 'info');
         return false;
     };
 
     let googleInitAttempts = 0;
     const tryInitializeGoogle = () => {
-        if (initializeGoogleClient()) {
+        const initialized = initializeGoogleClient();
+        if (initialized) {
             return;
         }
 
         googleInitAttempts += 1;
+        debugLog(`Tentative d'initialisation Google #${googleInitAttempts}`, 'info');
         if (googleInitAttempts < 10) {
             setTimeout(tryInitializeGoogle, 300);
         } else if (loginResult) {
             loginResult.textContent = 'Le client Google n’a pas pu être chargé. Vérifiez votre connexion ou désactivez les bloqueurs.';
+            debugLog('Échec du chargement du client Google après plusieurs tentatives.', 'error');
         }
     };
 
@@ -160,10 +193,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (googleLoginButton && loginResult) {
         googleLoginButton.addEventListener('click', () => {
+            debugLog('Bouton Google cliqué', 'info');
             if (window.google && window.google.accounts && window.google.accounts.id) {
+                debugLog('Google Identity Services est chargé, appel de prompt()', 'info');
                 window.google.accounts.id.prompt();
             } else {
                 loginResult.textContent = 'Le client Google n’est pas encore chargé. Rechargez la page et réessayez.';
+                debugLog('Google Identity Services non disponible au moment du clic', 'error');
             }
         });
     }
