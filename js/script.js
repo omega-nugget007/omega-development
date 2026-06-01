@@ -107,14 +107,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    if (window.google && window.google.accounts && window.google.accounts.id) {
-        window.google.accounts.id.initialize({
-            client_id: '388955794215-jsh1ip7578kt53bagihestg7plf5lml6.apps.googleusercontent.com',
-            callback: handleCredentialResponse,
-            ux_mode: 'popup'
-        });
-        window.google.accounts.id.disableAutoSelect();
-    }
+    const initializeGoogleClient = () => {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+            window.google.accounts.id.initialize({
+                client_id: '388955794215-jsh1ip7578kt53bagihestg7plf5lml6.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+                ux_mode: 'popup',
+                auto_select: false,
+                context: 'signin'
+            });
+            window.google.accounts.id.disableAutoSelect();
+            if (googleLoginButton) {
+                googleLoginButton.disabled = false;
+            }
+            return true;
+        }
+        return false;
+    };
+
+    let googleInitAttempts = 0;
+    const tryInitializeGoogle = () => {
+        if (initializeGoogleClient()) {
+            return;
+        }
+
+        googleInitAttempts += 1;
+        if (googleInitAttempts < 10) {
+            setTimeout(tryInitializeGoogle, 300);
+        } else if (loginResult) {
+            loginResult.textContent = 'Le client Google n’a pas pu être chargé. Vérifiez votre connexion ou désactivez les bloqueurs.';
+        }
+    };
+
+    tryInitializeGoogle();
 
     if (googleLoginButton && loginResult) {
         googleLoginButton.addEventListener('click', () => {
