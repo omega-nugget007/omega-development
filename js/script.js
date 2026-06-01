@@ -52,12 +52,22 @@ const scrollAnimations = () => {
     });
 };
 
-const staffEmails = [
-    'admin@omega.dev',
-    'staff@omega.dev',
-    'support@omega.dev',
-    'team@omega.dev'
-];
+let staffEmails = [];
+
+const loadStaffEmails = async () => {
+    try {
+        const response = await fetch('staff-emails.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        if (Array.isArray(data)) {
+            staffEmails = data.map(email => email.toLowerCase());
+        }
+    } catch (error) {
+        console.error('Impossible de charger la liste des emails staff :', error);
+    }
+};
 
 const isStaffEmail = (email) => {
     return staffEmails.includes(email.toLowerCase());
@@ -67,9 +77,10 @@ const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     navSlide();
     scrollAnimations();
+    await loadStaffEmails();
 
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
@@ -101,15 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isStaffEmail(email)) {
-            loginResult.textContent = `Bienvenue Staff (${email}) ! Accès au Panel Staff activé.`;
-        } else {
-            loginResult.textContent = `Bienvenue Utilisateur (${email}) ! Espace Utilisateur disponible.`;
-        }
-    };
-
-    const initializeGoogleClient = () => {
-        if (window.google && window.google.accounts && window.google.accounts.id) {
-            window.google.accounts.id.initialize({
+                loginResult.textContent = `Bienvenue Staff (${email}) ! Redirection vers le Panel Staff…`;
+                setTimeout(() => {
+                    window.location.href = 'panel-staff.html';
+                }, 1100);
+            } else {
+                loginResult.textContent = `Bienvenue Utilisateur (${email}) ! Redirection vers l'Espace Utilisateur…`;
+                setTimeout(() => {
+                    window.location.href = 'espace-utilisateur.html';
+                }, 1100);
                 client_id: '388955794215-jsh1ip7578kt53bagihestg7plf5lml6.apps.googleusercontent.com',
                 callback: handleCredentialResponse,
                 ux_mode: 'popup',
