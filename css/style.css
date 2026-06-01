@@ -67,9 +67,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1.75rem;
 }
 
 .logo h1 {
@@ -80,8 +80,10 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 1.6rem;
+    gap: 1rem;
     list-style: none;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -90,6 +92,7 @@ nav {
     position: relative;
     transition: color 0.25s ease;
     padding: 0.2rem 0;
+    white-space: nowrap;
 }
 
 .nav-links a::after {
@@ -101,6 +104,24 @@ nav {
     height: 2px;
     background: var(--accent);
     transition: width 0.25s ease;
+}
+
+.nav-links li.login-link {
+    margin-left: auto;
+}
+
+.login-nav-btn {
+    border: 1px solid rgba(242,79,88,0.26);
+    border-radius: 999px;
+    padding: 0.95rem 1.5rem;
+    background: rgba(242,79,88,0.18);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 12px 28px rgba(242,79,88,0.12);
+}
+
+.login-nav-btn:hover {
+    background: rgba(242,79,88,0.24);
 }
 
 .nav-links a:hover,
@@ -207,6 +228,99 @@ nav {
 /* Section styling */
 section {
     padding: 3rem 2rem;
+}
+
+.login {
+    background: rgba(255,255,255,0.03);
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+}
+
+.login-card {
+    width: min(100%, 860px);
+    display: grid;
+    gap: 1.5rem;
+    padding: 2.5rem;
+    border-radius: 28px;
+    background: rgba(10,11,16,0.95);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+}
+
+.login-intro p {
+    max-width: 760px;
+    line-height: 1.9;
+    color: var(--muted);
+}
+
+.login-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.google-btn {
+    background: #4285f4;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 1rem 1.8rem;
+    min-width: 250px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 18px 40px rgba(66,133,244,0.18);
+    transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+}
+
+.google-btn:hover {
+    transform: translateY(-2px);
+    background: #357ae8;
+    box-shadow: 0 22px 48px rgba(66,133,244,0.22);
+}
+
+.login-role {
+    display: none;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.login-role.visible {
+    display: flex;
+}
+
+.login-role p {
+    margin: 0;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.role-btn {
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.95rem 1.3rem;
+    border-radius: 16px;
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.role-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--accent);
+    background: rgba(242,79,88,0.12);
+}
+
+.login-result {
+    min-height: 3.5rem;
+    padding: 1rem 1.15rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    font-weight: 600;
 }
 
 .container {
