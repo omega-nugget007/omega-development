@@ -112,15 +112,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (isStaffEmail(email)) {
-                loginResult.textContent = `Bienvenue Staff (${email}) ! Redirection vers le Panel Staff…`;
-                setTimeout(() => {
-                    window.location.href = 'panel-staff.html';
-                }, 1100);
-            } else {
-                loginResult.textContent = `Bienvenue Utilisateur (${email}) ! Redirection vers l'Espace Utilisateur…`;
-                setTimeout(() => {
-                    window.location.href = 'espace-utilisateur.html';
-                }, 1100);
+            loginResult.textContent = `Bienvenue Staff (${email}) ! Redirection vers le Panel Staff…`;
+            setTimeout(() => {
+                window.location.href = 'panel-staff.html';
+            }, 1100);
+        } else {
+            loginResult.textContent = `Bienvenue Utilisateur (${email}) ! Redirection vers l'Espace Utilisateur…`;
+            setTimeout(() => {
+                window.location.href = 'espace-utilisateur.html';
+            }, 1100);
+        }
+    };
+
+    const initializeGoogleClient = () => {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+            window.google.accounts.id.initialize({
                 client_id: '388955794215-jsh1ip7578kt53bagihestg7plf5lml6.apps.googleusercontent.com',
                 callback: handleCredentialResponse,
                 ux_mode: 'popup',
