@@ -161,9 +161,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 context: 'signin'
             });
             window.google.accounts.id.disableAutoSelect();
+            
+            // Render button with Google - this ensures popup displays correctly
             if (googleLoginButton) {
+                window.google.accounts.id.renderButton(googleLoginButton, {
+                    theme: 'dark',
+                    size: 'large',
+                    text: 'continue_with',
+                    width: '100%'
+                });
                 googleLoginButton.disabled = false;
             }
+            
             setDebugStatus('Google Identity Services chargé. Cliquez sur le bouton pour continuer.');
             debugLog('Initialisation du client Google réussie.', 'success');
             return true;
@@ -191,18 +200,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     tryInitializeGoogle();
 
-    if (googleLoginButton && loginResult) {
-        googleLoginButton.addEventListener('click', () => {
-            debugLog('Bouton Google cliqué', 'info');
-            if (window.google && window.google.accounts && window.google.accounts.id) {
-                debugLog('Google Identity Services est chargé, appel de prompt()', 'info');
-                window.google.accounts.id.prompt();
-            } else {
-                loginResult.textContent = 'Le client Google n’est pas encore chargé. Rechargez la page et réessayez.';
-                debugLog('Google Identity Services non disponible au moment du clic', 'error');
-            }
-        });
-    }
+    // Note: Google renderButton() handles all click events automatically
+    // No need for manual click listener - the popup will display reliably
 });
 
 const style = document.createElement('style');
