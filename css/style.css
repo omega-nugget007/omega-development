@@ -615,3 +615,371 @@ footer {
         padding: 2.5rem 1.5rem;
     }
 }
+
+/* ===== ADMIN PANEL STYLES ===== */
+.admin-panel {
+    padding: 2rem 1.75rem;
+}
+
+.panel-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.panel-content {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tab-content h3 {
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: rgba(242,79,88,0.08);
+    border: 1px solid rgba(242,79,88,0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-card h4 {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+/* Users Management */
+.search-box {
+    margin-bottom: 1.5rem;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+}
+
+.users-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.user-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-item span {
+    color: var(--muted);
+}
+
+/* Staff Emails Management */
+.staff-emails-container {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.add-email-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.add-email-form input {
+    flex: 1;
+}
+
+.staff-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.staff-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.staff-item span {
+    color: var(--muted);
+}
+
+/* Logs */
+.logs-list {
+    display: grid;
+    gap: 0.75rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.log-time {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.log-action {
+    color: var(--text);
+}
+
+.log-details {
+    color: var(--muted);
+}
+
+/* Settings */
+.settings-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.settings-form label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.settings-form input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+}
+
+.settings-form .btn {
+    width: fit-content;
+}
+
+/* Button Styles */
+.btn-small {
+    background: rgba(242,79,88,0.2);
+    border: 1px solid rgba(242,79,88,0.3);
+    color: var(--accent);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-small:hover {
+    background: rgba(242,79,88,0.3);
+    border-color: rgba(242,79,88,0.5);
+}
+
+/* ===== USER SPACE STYLES ===== */
+.user-space .panel-tabs {
+    border-bottom: 1px solid var(--border);
+}
+
+.user-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.user-tab-btn:hover {
+    color: var(--text);
+}
+
+.user-tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+[data-section] {
+    animation: fadeIn 0.3s ease;
+}
+
+.profile-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+.profile-info {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-info p {
+    color: var(--muted);
+}
+
+.profile-info strong {
+    color: var(--text);
+}
+
+.games-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.game-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-item h4 {
+    margin: 0;
+    color: var(--text);
+}
+
+.support-section {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.ticket-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.ticket-form textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    resize: vertical;
+    min-height: 120px;
+}
+
+.tickets-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.ticket-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.ticket-item strong {
+    color: var(--text);
+}
+
+.ticket-item p {
+    color: var(--muted);
+    margin: 0.5rem 0;
+}
+
+.status {
+    display: inline-block;
+    background: rgba(242,79,88,0.2);
+    color: var(--accent);
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.account-section {
+    display: grid;
+    gap: 1rem;
+}
+
+.account-section label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.account-section input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+}
