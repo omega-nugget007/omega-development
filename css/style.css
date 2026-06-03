@@ -983,3 +983,255 @@ footer {
     width: auto;
     cursor: pointer;
 }
+
+/* ===== ENHANCED USER SPACE STYLES ===== */
+
+/* Danger Buttons */
+.btn-danger {
+    background: rgba(220, 38, 38, 0.2) !important;
+    border: 1px solid rgba(220, 38, 38, 0.3) !important;
+    color: #dc2626 !important;
+}
+
+.btn-danger:hover {
+    background: rgba(220, 38, 38, 0.3) !important;
+    border-color: rgba(220, 38, 38, 0.5) !important;
+}
+
+.btn-small.btn-danger {
+    background: rgba(220, 38, 38, 0.2);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: #dc2626;
+}
+
+.btn-small.btn-danger:hover {
+    background: rgba(220, 38, 38, 0.3);
+    border-color: rgba(220, 38, 38, 0.5);
+}
+
+/* Profile Enhancements */
+.profile-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.profile-actions .btn {
+    width: 100%;
+}
+
+/* Games Section Enhancements */
+.games-section {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.game-info {
+    flex: 1;
+}
+
+.game-info h4 {
+    margin: 0 0 0.5rem 0;
+}
+
+.game-info p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0.25rem 0;
+}
+
+.game-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    margin-top: 0.5rem;
+}
+
+.game-status.staff-only {
+    background: rgba(242, 79, 88, 0.2);
+    color: var(--accent);
+}
+
+.game-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Tickets Enhancements */
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticket-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.ticket-message {
+    background: rgba(255,255,255,0.02);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    line-height: 1.6;
+}
+
+.ticket-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.status.en\ attente {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.status.en\ cours {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+.status.résolu {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+}
+
+/* Account Settings */
+.settings-group {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.settings-group h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.settings-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+}
+
+.settings-group label:hover {
+    color: var(--text);
+}
+
+.settings-group label input {
+    width: auto;
+    cursor: pointer;
+}
+
+.settings-group .btn {
+    width: 100%;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+/* User Item in Admin */
+.user-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.user-item:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(242,79,88,0.3);
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-info strong {
+    display: block;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+}
+
+.user-info p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.user-info small {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Log Date Display */
+.log-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-left: 0.5rem;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .profile-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .game-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .game-actions {
+        width: 100%;
+    }
+
+    .game-actions .btn-small {
+        width: 100%;
+    }
+
+    .user-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-actions {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .ticket-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .ticket-date {
+        order: 3;
+        width: 100%;
+    }
+}
