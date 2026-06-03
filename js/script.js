@@ -91,10 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const googleLoginButton = document.getElementById('google-login');
 
     const handleCredentialResponse = (response) => {
-        debugLog('handleCredentialResponse appelé', 'info');
         if (!response || !response.credential) {
             loginResult.textContent = 'Erreur de connexion Google. Réessayez.';
-            debugLog('Aucun credential reçu ou réponse invalide', 'error');
             return;
         }
 
@@ -143,8 +141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.google.accounts.id.renderButton(googleLoginButton, {
                     theme: 'dark',
                     size: 'large',
-                    text: 'continue_with',
-                    width: '100%'
+                    text: 'continue_with'
                 });
                 googleLoginButton.disabled = false;
             }
