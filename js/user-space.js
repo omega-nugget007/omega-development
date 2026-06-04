@@ -1,17 +1,14 @@
-// Espace Utilisateur - Sanctions Roblox
-// DCP sanctions are fetched live from Roblox DataStore via proxy
- 
-// ⚠️ CONFIGURE ICI le chemin vers ton proxy PHP
+
 const SANCTIONS_PROXY_URL = 'https://sanctionsproxy.onrender.com/api/sanctions';
- 
+
 let userData = {
     email: localStorage.getItem('userEmail') || '',
     robloxHandle: localStorage.getItem('robloxHandle') || '',
     robloxUserId: localStorage.getItem('robloxUserId') || '',
 };
- 
+
 // ── Persistance ───────────────────────────────────────────────────────────────
- 
+
 const loadUserData = () => {
     const stored = localStorage.getItem('userData');
     if (stored) {
@@ -26,28 +23,28 @@ const loadUserData = () => {
     userData.robloxHandle  = localStorage.getItem('robloxHandle') || userData.robloxHandle;
     userData.robloxUserId  = localStorage.getItem('robloxUserId') || userData.robloxUserId;
 };
- 
+
 const saveUserData = () => {
     localStorage.setItem('userData',      JSON.stringify(userData));
     localStorage.setItem('robloxHandle',  userData.robloxHandle);
     localStorage.setItem('robloxUserId',  userData.robloxUserId);
 };
- 
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
- 
+
 const requireLogin = () => {
     if (!userData.email) window.location.href = 'login.html';
 };
- 
+
 // ── Validation ────────────────────────────────────────────────────────────────
- 
+
 const validateRobloxHandle = (handle) => {
     // Accepte "@pseudo" ou "pseudo" (sans @)
     return /^@?[A-Za-z0-9_]{3,20}$/.test(handle.trim());
 };
- 
+
 // ── Labels ────────────────────────────────────────────────────────────────────
- 
+
 const getSanctionLabel = (type) => {
     const labels = {
         warning:            '⚠️ Avertissement',
@@ -61,7 +58,7 @@ const getSanctionLabel = (type) => {
     };
     return labels[(type || '').toLowerCase()] || type;
 };
- 
+
 const formatSanctionDuration = (sanction) => {
     if (sanction.permanent) return 'Permanent';
     if (sanction.expiresAt && typeof sanction.expiresAt === 'number') {
@@ -71,41 +68,36 @@ const formatSanctionDuration = (sanction) => {
     if (sanction.expiresAt) return `Expire le ${sanction.expiresAt}`;
     return sanction.duration || 'Permanent';
 };
- 
-// ── Roblox API : résoudre pseudo → UserID ─────────────────────────────────────
- 
+
+// ── Roblox : résoudre pseudo → UserID (via proxy pour éviter CORS) ───────────
+
 const resolveRobloxUserId = async (handle) => {
-    // Enlève le @ si présent
     const username = handle.replace(/^@/, '');
     try {
-        const res = await fetch('https://users.roblox.com/v1/usernames/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
-        });
+        const res  = await fetch(`${SANCTIONS_PROXY_URL.replace('/api/sanctions', '')}/api/resolve?username=${encodeURIComponent(username)}`);
         const data = await res.json();
-        if (data?.data?.[0]?.id) return String(data.data[0].id);
+        if (data.id) return data.id;
         return null;
     } catch {
         return null;
     }
 };
- 
+
 // ── Fetch sanctions DCP depuis le proxy ───────────────────────────────────────
- 
+
 const fetchDCPSanctions = async (userId) => {
     const res  = await fetch(`${SANCTIONS_PROXY_URL}?userId=${encodeURIComponent(userId)}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
     return data; // { name, sanctions: [...] }
 };
- 
+
 // ── Rendu : header joueur ─────────────────────────────────────────────────────
- 
+
 const renderUserHeader = () => {
     const userWelcome = document.getElementById('user-welcome');
     if (!userWelcome) return;
- 
+
     const robloxLabel = userData.robloxHandle || 'Pseudo Roblox non défini';
     userWelcome.innerHTML = `
         <div class="user-card">
@@ -115,7 +107,7 @@ const renderUserHeader = () => {
             ${userData.robloxHandle ? `<button class="btn btn-sm btn-outline" id="change-handle-btn">Changer de pseudo</button>` : ''}
         </div>
     `;
- 
+
     document.getElementById('change-handle-btn')?.addEventListener('click', () => {
         userData.robloxHandle = '';
         userData.robloxUserId = '';
@@ -125,18 +117,18 @@ const renderUserHeader = () => {
         renderSanctions();
     });
 };
- 
+
 // ── Rendu : formulaire pseudo ─────────────────────────────────────────────────
- 
+
 const renderRobloxHandleForm = () => {
     const formContainer = document.getElementById('roblox-handle-form');
     if (!formContainer) return;
- 
+
     if (userData.robloxHandle) {
         formContainer.innerHTML = '';
         return;
     }
- 
+
     formContainer.innerHTML = `
         <div class="roblox-handle-card">
             <h3>Entrez votre pseudo Roblox</h3>
@@ -149,27 +141,27 @@ const renderRobloxHandleForm = () => {
             <p class="form-note">Ce pseudo est utile pour synchroniser vos sanctions entre le site et le jeu.</p>
         </div>
     `;
- 
+
     document.getElementById('roblox-handle-form-element').addEventListener('submit', async (e) => {
         e.preventDefault();
         const input     = document.getElementById('roblox-handle-input');
         const btn       = document.getElementById('handle-submit-btn');
         const errorEl   = document.getElementById('handle-form-error');
         const handle    = input.value.trim();
- 
+
         if (!validateRobloxHandle(handle)) {
             errorEl.textContent = 'Pseudo invalide. Exemple valide : @MonPseudo';
             errorEl.style.display = 'block';
             return;
         }
- 
+
         // Résolution du UserID
         btn.disabled     = true;
         btn.textContent  = 'Recherche...';
         errorEl.style.display = 'none';
- 
+
         const userId = await resolveRobloxUserId(handle);
- 
+
         if (!userId) {
             btn.disabled    = false;
             btn.textContent = 'Valider';
@@ -177,7 +169,7 @@ const renderRobloxHandleForm = () => {
             errorEl.style.display = 'block';
             return;
         }
- 
+
         userData.robloxHandle = handle.startsWith('@') ? handle : '@' + handle;
         userData.robloxUserId = userId;
         saveUserData();
@@ -186,19 +178,19 @@ const renderRobloxHandleForm = () => {
         renderSanctions();
     });
 };
- 
+
 // ── Rendu : sanctions ─────────────────────────────────────────────────────────
- 
+
 const renderSanctions = async () => {
     const container = document.getElementById('sanctions-container');
     if (!container) return;
- 
+
     // Pas de pseudo lié = on attend
     if (!userData.robloxHandle || !userData.robloxUserId) {
         container.innerHTML = `<p class="form-note">Entrez votre pseudo Roblox pour voir vos sanctions.</p>`;
         return;
     }
- 
+
     // Loading
     container.innerHTML = `
         <div class="sanctions-summary">
@@ -207,17 +199,17 @@ const renderSanctions = async () => {
                 <p>Chargement en cours...</p>
             </div>
         </div>`;
- 
+
     let dcpSanctions = [];
     let fetchError   = null;
- 
+
     try {
         const data   = await fetchDCPSanctions(userData.robloxUserId);
         dcpSanctions = data.sanctions || [];
     } catch (err) {
         fetchError = err.message || 'Erreur inconnue';
     }
- 
+
     if (fetchError) {
         container.innerHTML = `
             <div class="sanctions-summary">
@@ -228,14 +220,14 @@ const renderSanctions = async () => {
             </div>`;
         return;
     }
- 
+
     const totalBans  = dcpSanctions.filter(s => (s.type || '').toLowerCase().includes('ban')).length;
     const totalWarns = dcpSanctions.filter(s => (s.type || '').toLowerCase().includes('warn')).length;
     const totalMutes = dcpSanctions.filter(s => (s.type || '').toLowerCase().includes('mute')).length;
- 
+
     // Trie par date décroissante
     const sorted = [...dcpSanctions].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
- 
+
     container.innerHTML = `
         <div class="sanctions-summary">
             <div class="summary-card">
@@ -264,9 +256,9 @@ const renderSanctions = async () => {
         }
     `;
 };
- 
+
 // ── Logout ────────────────────────────────────────────────────────────────────
- 
+
 const setupLogoutLink = () => {
     const logoutLink = document.querySelector('.login-nav-btn');
     if (logoutLink) {
@@ -278,9 +270,9 @@ const setupLogoutLink = () => {
         });
     }
 };
- 
+
 // ── Init ──────────────────────────────────────────────────────────────────────
- 
+
 const initUserSpace = () => {
     loadUserData();
     requireLogin();
@@ -289,5 +281,5 @@ const initUserSpace = () => {
     renderSanctions();
     setupLogoutLink();
 };
- 
+
 document.addEventListener('DOMContentLoaded', initUserSpace);
