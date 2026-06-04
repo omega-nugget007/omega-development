@@ -1,18 +1,12 @@
-// User Space - Game Stats & Sanctions System
+// Espace Utilisateur - Sanctions Roblox
 
 let userData = {
-    email: localStorage.getItem('userEmail') || 'utilisateur@example.com',
-    profile: {
-        username: localStorage.getItem('username') || 'Utilisateur',
-        joinDate: localStorage.getItem('joinDate') || new Date().toLocaleDateString('fr-FR'),
-        accountStatus: 'active'
-    },
+    email: localStorage.getItem('userEmail') || '',
+    robloxHandle: localStorage.getItem('robloxHandle') || '',
     games: [
         {
             id: 1,
             name: 'Nantes RP',
-            playtime: 145,
-            lastPlayed: '03/06/2026 14:30',
             sanctions: [
                 { id: 1, type: 'warning', reason: 'Spam dans le chat', date: '01/06/2026', duration: 'permanent' },
                 { id: 2, type: 'ban_7d', reason: 'Comportement toxique', date: '02/06/2026', expiresAt: '09/06/2026' }
@@ -21,8 +15,6 @@ let userData = {
         {
             id: 2,
             name: 'D.C.P',
-            playtime: 87,
-            lastPlayed: '02/06/2026 19:45',
             sanctions: [
                 { id: 3, type: 'warning', reason: 'Utilisation de glitch', date: '15/05/2026', duration: 'permanent' }
             ]
@@ -30,296 +22,178 @@ let userData = {
         {
             id: 3,
             name: 'Prison Life',
-            playtime: 234,
-            lastPlayed: '03/06/2026 10:15',
             sanctions: []
         }
-    ],
-    globalStats: {
-        totalPlaytime: 466,
-        totalGames: 3,
-        totalWarnings: 2,
-        totalBans: 1,
-        accountCreated: localStorage.getItem('joinDate') || '01/06/2026'
-    }
+    ]
 };
 
-// ===== DATA MANAGEMENT =====
 const loadUserData = () => {
     const stored = localStorage.getItem('userData');
     if (stored) {
-        userData = JSON.parse(stored);
-    } else {
-        saveUserData();
+        try {
+            const parsed = JSON.parse(stored);
+            userData = { ...userData, ...parsed };
+        } catch (error) {
+            console.warn('Impossible de lire userData en localStorage :', error);
+        }
     }
+    userData.email = localStorage.getItem('userEmail') || userData.email;
+    userData.robloxHandle = localStorage.getItem('robloxHandle') || userData.robloxHandle;
 };
 
 const saveUserData = () => {
     localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('robloxHandle', userData.robloxHandle);
 };
 
-// ===== PROFILE SECTION =====
-const setupProfile = () => {
-    const profileSection = document.querySelector('[data-section="profile"]');
-    if (!profileSection) return;
-
-    const totalWarnings = userData.games.reduce((sum, game) => 
-        sum + game.sanctions.filter(s => s.type === 'warning').length, 0
-    );
-    const totalBans = userData.games.reduce((sum, game) => 
-        sum + game.sanctions.filter(s => s.type.includes('ban')).length, 0
-    );
-
-    profileSection.innerHTML = `
-        <div class="profile-card">
-            <h3>Profil</h3>
-            <div class="profile-info">
-                <p><strong>Pseudo :</strong> ${userData.profile.username}</p>
-                <p><strong>Email :</strong> ${userData.email}</p>
-                <p><strong>Compte créé :</strong> ${userData.profile.joinDate}</p>
-                <p><strong>Statut :</strong> <span class="status-active">${userData.profile.accountStatus.toUpperCase()}</span></p>
-            </div>
-
-            <div class="stats-overview">
-                <h4>Statistiques Globales</h4>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <strong>${userData.globalStats.totalPlaytime}h</strong>
-                        <p>Temps total</p>
-                    </div>
-                    <div class="stat-box">
-                        <strong>${userData.globalStats.totalGames}</strong>
-                        <p>Jeux joués</p>
-                    </div>
-                    <div class="stat-box">
-                        <strong>${totalWarnings}</strong>
-                        <p>Avertissements</p>
-                    </div>
-                    <div class="stat-box">
-                        <strong>${totalBans}</strong>
-                        <p>Bans actifs</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+const requireLogin = () => {
+    if (!userData.email) {
+        window.location.href = 'login.html';
+    }
 };
 
-// ===== GAMES PLAYTIME SECTION =====
-const setupGames = () => {
-    const gamesSection = document.querySelector('[data-section="games"]');
-    if (!gamesSection) return;
-
-    gamesSection.innerHTML = `
-        <div class="games-section">
-            <h3>Temps de Jeu par Jeu</h3>
-            ${userData.games.map(game => {
-                const activeBans = game.sanctions.filter(s => s.type.includes('ban')).length;
-                const warnings = game.sanctions.filter(s => s.type === 'warning').length;
-                return `
-                    <div class="game-card">
-                        <div class="game-header">
-                            <h4>${game.name}</h4>
-                            <span class="playtime-badge">${game.playtime}h</span>
-                        </div>
-                        <div class="game-stats">
-                            <p>Dernière connexion: ${game.lastPlayed}</p>
-                            <p>Avertissements: <span class="warning-count">${warnings}</span></p>
-                            <p>Bans actifs: <span class="ban-count">${activeBans}</span></p>
-                        </div>
-                        <button class="btn-small" onclick="viewGameSanctions(${game.id})">Voir sanctions</button>
-                    </div>
-                `;
-            }).join('')}
-        </div>
-    `;
+const validateRobloxHandle = (handle) => {
+    return /^@[A-Za-z0-9_]{3,20}$/.test(handle.trim());
 };
 
-// ===== SANCTIONS SECTION =====
-const setupSanctions = () => {
-    const sanctionsSection = document.querySelector('[data-section="sanctions"]');
-    if (!sanctionsSection) return;
-
-    const allSanctions = [];
-    userData.games.forEach(game => {
-        game.sanctions.forEach(sanction => {
-            allSanctions.push({
-                ...sanction,
-                gameName: game.name,
-                gameId: game.id
-            });
-        });
-    });
-
-    allSanctions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    sanctionsSection.innerHTML = `
-        <div class="sanctions-section">
-            <h3>Sanctions & Avertissements</h3>
-            ${allSanctions.length === 0 ? '<p class="clean-record">✅ Aucune sanction - Excellent comportement!</p>' : `
-                <div class="sanctions-list">
-                    ${allSanctions.map(s => `
-                        <div class="sanction-item sanction-${s.type}">
-                            <div class="sanction-header">
-                                <span class="sanction-type">${getSanctionLabel(s.type)}</span>
-                                <span class="sanction-game">${s.gameName}</span>
-                                <span class="sanction-date">${s.date}</span>
-                            </div>
-                            <p class="sanction-reason"><strong>Raison :</strong> ${s.reason}</p>
-                            <p class="sanction-duration"><strong>Durée :</strong> ${s.duration || s.expiresAt}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            `}
-        </div>
-    `;
+const formatSanctionDuration = (sanction) => {
+    if (sanction.expiresAt) {
+        return `Expire le ${sanction.expiresAt}`;
+    }
+    return sanction.duration || 'Permanent';
 };
 
 const getSanctionLabel = (type) => {
     const labels = {
-        'warning': '⚠️ Avertissement',
-        'ban_7d': '🚫 Ban 7 jours',
-        'ban_30d': '🚫 Ban 30 jours',
-        'ban_permanent': '🔒 Ban Permanent',
-        'mute': '🔇 Mute Chat',
-        'account_restricted': '⛔ Compte Restreint'
+        warning: '⚠️ Avertissement',
+        ban_7d: '🚫 Ban 7 jours',
+        ban_30d: '🚫 Ban 30 jours',
+        ban_permanent: '🔒 Ban Permanent',
+        mute: '🔇 Mute Chat',
+        account_restricted: '⛔ Compte restreint'
     };
     return labels[type] || type;
 };
 
-const viewGameSanctions = (gameId) => {
-    const game = userData.games.find(g => g.id === gameId);
-    if (!game) return;
+const renderUserHeader = () => {
+    const userWelcome = document.getElementById('user-welcome');
+    if (!userWelcome) return;
 
-    const sanctionTab = document.querySelector('.user-tab-btn[data-section="sanctions"]');
-    if (sanctionTab) {
-        sanctionTab.click();
-    }
+    const robloxLabel = userData.robloxHandle ? userData.robloxHandle : 'Pseudo Roblox non défini';
+    userWelcome.innerHTML = `
+        <div class="user-card">
+            <h3>Bonjour ${userData.email}</h3>
+            <p><strong>Pseudo Roblox :</strong> ${robloxLabel}</p>
+            <p>Votre pseudo Roblox est utilisé pour lier votre espace utilisateur aux sanctions du jeu.</p>
+        </div>
+    `;
 };
 
-// ===== PROFILE ADVANCED =====
-const setupAccount = () => {
-    const accountSection = document.querySelector('[data-section="account"]');
-    if (!accountSection) return;
+const renderRobloxHandleForm = () => {
+    const formContainer = document.getElementById('roblox-handle-form');
+    if (!formContainer) return;
 
-    accountSection.innerHTML = `
-        <div class="account-section">
-            <h3>Paramètres du Compte</h3>
-            
-            <div class="settings-group">
-                <h4>Informations</h4>
-                <p>Pseudo: <strong>${userData.profile.username}</strong></p>
-                <p>Email: <strong>${userData.email}</strong></p>
-                <button class="btn" id="change-username-btn">Changer le pseudo</button>
-            </div>
+    if (userData.robloxHandle) {
+        formContainer.innerHTML = '';
+        return;
+    }
 
-            <div class="settings-group">
-                <h4>Sécurité</h4>
-                <button class="btn" id="change-password-btn">Changer le mot de passe</button>
-                <button class="btn" id="two-factor-btn">Activer 2FA</button>
-            </div>
-
-            <div class="settings-group">
-                <h4>Données</h4>
-                <button class="btn" id="export-btn">Exporter mes données</button>
-                <button class="btn btn-danger" id="logout-btn">Se déconnecter</button>
-            </div>
+    formContainer.innerHTML = `
+        <div class="roblox-handle-card">
+            <h3>Entrez votre pseudo Roblox</h3>
+            <p>Votre pseudo doit commencer par <strong>@</strong> et sera stocké pour la liaison avec le jeu.</p>
+            <form id="roblox-handle-form-element" class="roblox-handle-form">
+                <input type="text" id="roblox-handle-input" placeholder="@PseudoRoblox" required />
+                <button class="btn" type="submit">Valider</button>
+            </form>
+            <p class="form-note">Ce pseudo est utile pour synchroniser vos sanctions entre le site et le jeu.</p>
         </div>
     `;
 
-    const changeUsernameBtn = document.getElementById('change-username-btn');
-    if (changeUsernameBtn) {
-        changeUsernameBtn.addEventListener('click', () => {
-            const newUsername = prompt('Entrez votre nouveau pseudo:', userData.profile.username);
-            if (newUsername && newUsername.trim()) {
-                userData.profile.username = newUsername.trim();
-                localStorage.setItem('username', newUsername.trim());
-                saveUserData();
-                setupAccount();
-                setupProfile();
-            }
-        });
-    }
+    const form = document.getElementById('roblox-handle-form-element');
+    if (!form) return;
 
-    const changePasswordBtn = document.getElementById('change-password-btn');
-    if (changePasswordBtn) {
-        changePasswordBtn.addEventListener('click', () => {
-            alert('Changement de mot de passe - Fonctionnalité en développement');
-        });
-    }
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = document.getElementById('roblox-handle-input');
+        if (!input) return;
 
-    const twoFactorBtn = document.getElementById('two-factor-btn');
-    if (twoFactorBtn) {
-        twoFactorBtn.addEventListener('click', () => {
-            alert('2FA activé avec succès!');
-        });
-    }
+        const handle = input.value.trim();
+        if (!validateRobloxHandle(handle)) {
+            alert('Veuillez entrer un pseudo Roblox valide commençant par @ et sans espaces.');
+            return;
+        }
 
-    const exportBtn = document.getElementById('export-btn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
-            const dataStr = JSON.stringify(userData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `user-data-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-        });
-    }
-
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('userEmail');
-            alert('Déconnexion...');
-            window.location.href = 'login.html';
-        });
-    }
+        userData.robloxHandle = handle;
+        saveUserData();
+        renderUserHeader();
+        renderRobloxHandleForm();
+        renderSanctions();
+    });
 };
 
-// ===== TAB SWITCHING =====
-const setupUserTabs = () => {
-    document.querySelectorAll('.user-tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const sectionName = e.target.dataset.section;
-
-            document.querySelectorAll('.user-tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('[data-section]').forEach(s => s.style.display = 'none');
-
-            e.target.classList.add('active');
-            const section = document.querySelector(`[data-section="${sectionName}"]`);
-            if (section) {
-                section.style.display = 'block';
-            }
-
-            switch (sectionName) {
-                case 'profile':
-                    setupProfile();
-                    break;
-                case 'games':
-                    setupGames();
-                    break;
-                case 'sanctions':
-                    setupSanctions();
-                    break;
-                case 'account':
-                    setupAccount();
-                    break;
-            }
+const getAllSanctions = () => {
+    const sanctions = [];
+    userData.games.forEach((game) => {
+        game.sanctions.forEach((sanction) => {
+            sanctions.push({ ...sanction, gameName: game.name });
         });
     });
+    return sanctions.sort((a, b) => new Date(b.date) - new Date(a.date));
+};
 
-    const firstTab = document.querySelector('.user-tab-btn');
-    if (firstTab) {
-        firstTab.classList.add('active');
+const renderSanctions = () => {
+    const container = document.getElementById('sanctions-container');
+    if (!container) return;
+
+    const sanctions = getAllSanctions();
+    const totalWarnings = sanctions.filter((s) => s.type === 'warning').length;
+    const totalBans = sanctions.filter((s) => s.type.includes('ban')).length;
+
+    container.innerHTML = `
+        <div class="sanctions-summary">
+            <div class="summary-card">
+                <h3>Vos sanctions</h3>
+                <p><strong>Total avertissements :</strong> ${totalWarnings}</p>
+                <p><strong>Total bans :</strong> ${totalBans}</p>
+            </div>
+        </div>
+        ${sanctions.length === 0 ? '<p class="clean-record">✅ Aucune sanction enregistrée pour le moment.</p>' : `
+            <div class="sanctions-list">
+                ${sanctions.map((sanction) => `
+                    <div class="sanction-item sanction-${sanction.type}">
+                        <div class="sanction-header">
+                            <span class="sanction-type">${getSanctionLabel(sanction.type)}</span>
+                            <span class="sanction-game">${sanction.gameName}</span>
+                            <span class="sanction-date">${sanction.date}</span>
+                        </div>
+                        <p class="sanction-reason"><strong>Raison :</strong> ${sanction.reason}</p>
+                        <p class="sanction-duration"><strong>Durée :</strong> ${formatSanctionDuration(sanction)}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `}
+    `;
+};
+
+const setupLogoutLink = () => {
+    const logoutLink = document.querySelector('.login-nav-btn');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', () => {
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('robloxHandle');
+        });
     }
 };
 
-// ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', () => {
+const initUserSpace = () => {
     loadUserData();
-    setupUserTabs();
-    setupProfile();
-});
+    requireLogin();
+    renderUserHeader();
+    renderRobloxHandleForm();
+    renderSanctions();
+    setupLogoutLink();
+};
+
+document.addEventListener('DOMContentLoaded', initUserSpace);
 

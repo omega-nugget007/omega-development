@@ -34,26 +34,15 @@
     <main>
         <section class="hero">
             <h2>Espace Utilisateur</h2>
-            <p>Bienvenue dans votre espace utilisateur. Découvrez les fonctionnalités dédiées aux membres de la communauté Omega Development.</p>
-            <br>
-            <a href="login.html" class="btn">Retour à la connexion</a>
+            <p>Consultez vos sanctions Roblox et votre pseudo lié au jeu.</p>
+            <a href="login.html" class="btn">Déconnexion</a>
         </section>
 
-        <section class="admin-panel">
+        <section class="user-panel">
             <div class="container">
-                <div class="panel-tabs">
-                    <button class="user-tab-btn active" data-section="profile">Profil</button>
-                    <button class="user-tab-btn" data-section="games">Temps de Jeu</button>
-                    <button class="user-tab-btn" data-section="sanctions">Sanctions</button>
-                    <button class="user-tab-btn" data-section="account">Compte</button>
-                </div>
-
-                <div class="panel-content">
-                    <div data-section="profile" style="display: block;"></div>
-                    <div data-section="games"></div>
-                    <div data-section="sanctions"></div>
-                    <div data-section="account"></div>
-                </div>
+                <div id="user-welcome" class="user-welcome"></div>
+                <div id="roblox-handle-form"></div>
+                <div id="sanctions-container"></div>
             </div>
         </section>
     </main>

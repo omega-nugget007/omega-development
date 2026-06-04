@@ -52,27 +52,6 @@ const scrollAnimations = () => {
     });
 };
 
-let staffEmails = [];
-
-const loadStaffEmails = async () => {
-    try {
-        const response = await fetch('staff-emails.json');
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        const data = await response.json();
-        if (Array.isArray(data)) {
-            staffEmails = data.map(email => email.toLowerCase());
-        }
-    } catch (error) {
-        console.error('Impossible de charger la liste des emails staff :', error);
-    }
-};
-
-const isStaffEmail = (email) => {
-    return staffEmails.includes(email.toLowerCase());
-};
-
 const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 };
@@ -80,7 +59,6 @@ const validateEmail = (email) => {
 document.addEventListener('DOMContentLoaded', async () => {
     navSlide();
     scrollAnimations();
-    await loadStaffEmails();
 
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
@@ -112,17 +90,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         localStorage.setItem('userEmail', email);
-        if (isStaffEmail(email)) {
-            loginResult.textContent = `Bienvenue Staff ! Redirection…`;
-            setTimeout(() => {
-                window.location.href = 'panel-staff.html';
-            }, 1100);
-        } else {
-            loginResult.textContent = `Bienvenue ! Redirection…`;
-            setTimeout(() => {
-                window.location.href = 'espace-utilisateur.html';
-            }, 1100);
-        }
+        loginResult.textContent = `Bienvenue ! Redirection…`;
+        setTimeout(() => {
+            window.location.href = 'espace-utilisateur.html';
+        }, 1100);
     };
 
     const initializeGoogleClient = () => {
