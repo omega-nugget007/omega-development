@@ -7,6 +7,11 @@ let userData = {
     robloxUserId: localStorage.getItem('robloxUserId') || '',
 };
 
+// Vérifie si c'est la première connexion (mail présent mais pas de pseudo Roblox)
+const isFirstLogin = () => {
+    return userData.email && !userData.robloxHandle;
+};
+
 // ── Persistance ───────────────────────────────────────────────────────────────
 
 const loadUserData = () => {
@@ -124,21 +129,27 @@ const renderRobloxHandleForm = () => {
     const formContainer = document.getElementById('roblox-handle-form');
     if (!formContainer) return;
 
-    if (userData.robloxHandle) {
+    // Affiche le formulaire UNIQUEMENT à la première connexion
+    const showFirstLoginForm = isFirstLogin();
+
+    if (!showFirstLoginForm) {
         formContainer.innerHTML = '';
         return;
     }
 
     formContainer.innerHTML = `
-        <div class="roblox-handle-card">
-            <h3>Entrez votre pseudo Roblox</h3>
-            <p>Votre pseudo doit commencer par <strong>@</strong> et sera stocké pour la liaison avec le jeu.</p>
-            <form id="roblox-handle-form-element" class="roblox-handle-form">
-                <input type="text" id="roblox-handle-input" placeholder="@PseudoRoblox" required />
-                <button class="btn" type="submit" id="handle-submit-btn">Valider</button>
-            </form>
-            <p id="handle-form-error" class="form-error" style="display:none;color:red;margin-top:8px;"></p>
-            <p class="form-note">Ce pseudo est utile pour synchroniser vos sanctions entre le site et le jeu.</p>
+        <div class="roblox-handle-card first-login-form">
+            <div class="first-login-overlay"></div>
+            <div class="first-login-content">
+                <h3>🎮 Première connexion</h3>
+                <p><strong>Avant de voir vos sanctions, veuillez entrer votre pseudo Roblox.</strong></p>
+                <p>Ce pseudo sera sauvegardé avec votre compte et utilisé pour lier vos sanctions.</p>
+                <form id="roblox-handle-form-element" class="roblox-handle-form">
+                    <input type="text" id="roblox-handle-input" placeholder="@PseudoRoblox" required autofocus />
+                    <button class="btn" type="submit" id="handle-submit-btn">Continuer</button>
+                </form>
+                <p id="handle-form-error" class="form-error" style="display:none;color:red;margin-top:8px;"></p>
+            </div>
         </div>
     `;
 
@@ -164,7 +175,7 @@ const renderRobloxHandleForm = () => {
 
         if (!userId) {
             btn.disabled    = false;
-            btn.textContent = 'Valider';
+            btn.textContent = 'Continuer';
             errorEl.textContent = 'Pseudo Roblox introuvable. Vérifie l\'orthographe.';
             errorEl.style.display = 'block';
             return;
