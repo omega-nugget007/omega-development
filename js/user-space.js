@@ -245,9 +245,11 @@ const renderSanctions = async () => {
                 <h3>Vos sanctions D.C.P</h3>
                 <p><strong>Total bans :</strong> ${totalBans}</p>
                 <p><strong>Total avertissements :</strong> ${totalWarns}</p>
-                <p><strong>Total mutes :</strong> ${totalMutes}</p>
             </div>
         </div>
+        <br>
+        <br>
+        <br>
         ${sorted.length === 0
             ? '<p class="clean-record">✅ Aucune sanction enregistrée sur D.C.P.</p>'
             : `<div class="sanctions-list">
