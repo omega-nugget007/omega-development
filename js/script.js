@@ -22,10 +22,51 @@ const navSlide = () => {
 };
 
 // Form submission
-const handleFormSubmit = (event) => {
+// Form submission → Envoi au webhook Discord
+const handleFormSubmit = async (event) => {
     event.preventDefault();
-    alert('Merci pour votre message ! Nous vous contacterons bientôt.');
-    event.target.reset();
+
+    const webhookURL = "https://discord.com/api/webhooks/1514344770317713428/WlkYxyvqe4Q7bJDX2MXgM2RCaPrJxhNak_iTEEZ04NY_5b6zUcI88eQZHSjduno6mwEr"; // Mets ton webhook ici
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const subject = document.getElementById("subject").value;
+    const message = document.getElementById("message").value;
+
+    const payload = {
+        username: "Omega Contact",
+        embeds: [
+            {
+                title: "📩 Nouveau message du formulaire",
+                color: 5814783,
+                fields: [
+                    { name: "👤 Nom", value: name, inline: true },
+                    { name: "📧 Email", value: email, inline: true },
+                    { name: "🎯 Sujet", value: subject },
+                    { name: "💬 Message", value: message }
+                ],
+                timestamp: new Date().toISOString()
+            }
+        ]
+    };
+
+    try {
+        const response = await fetch(webhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error("Erreur HTTP");
+        }
+
+        alert("Message envoyé avec succès !");
+        event.target.reset();
+    } catch (error) {
+        console.error("Erreur lors de l’envoi du message :", error);
+        alert("Erreur lors de l’envoi du message.");
+    }
 };
 
 // Scroll reveal animations
