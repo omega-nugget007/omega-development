@@ -1597,7 +1597,7 @@ footer {
 }
 
 .updates {
-    background: #111;
+    background: none;
     color: #fff;
     padding: 50px 0;
     margin-top: 40px;
@@ -1628,7 +1628,7 @@ footer {
 
 
 body.home {
-    background: url("assets/images/background-home.png") no-repeat center center fixed;
+    background: url("../assets/background-home.png") no-repeat center center fixed;
     background-size: cover;
     background-attachment: fixed;
     color: #fff;
@@ -1644,3 +1644,118 @@ body.home::before {
     background: rgba(0, 0, 0, 0.55); /* intensité du noir */
     z-index: -1;
 }
+
+body.contact {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.contact::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+body.dcp {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.dcp::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+body.user-space {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.user-space::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+body.login {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.login::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+body.policy {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.policy::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+body.services {
+    background: url("../assets/background-home.png") no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+}
+
+body.services::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* intensité du noir */
+    z-index: -1;
+}
+
+
+
+
+
+
+
