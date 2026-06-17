@@ -1603,6 +1603,19 @@ footer {
     margin-top: 40px;
 }
 
+.countdown {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+
 .updates h3 {
     font-size: 28px;
     margin-bottom: 20px;

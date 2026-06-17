@@ -6,6 +6,33 @@
     <title>Omega Development - D.C.P</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
+<script>
+    // Date cible : 1 juillet 2026 à minuit
+    const targetDate = new Date("July 1, 2026 00:00:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+            document.getElementById("countdown").innerHTML = "🎉 C'est le 1er juillet !";
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+            `${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
 <body class="dcp">
     <header>
         <nav>
@@ -30,11 +57,17 @@
         </nav>
     </header>
 
+    
+
+
     <main>
         <section class="hero">
             <h2>D.C.P - Detain, Contain, Preserve</h2>
             <p>Un jeu de Roleplay, inspiré de l'univers SCP, ou il faut contenir des prisionniers et survivre dans un bunker ultra-secret.</p>
         </section>
+
+
+            <div id="countdown" class="countdown"></div>
 
         <section class="content">
             <div class="container">

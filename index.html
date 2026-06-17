@@ -6,6 +6,33 @@
     <title>Omega Development - Accueil</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
+<script>
+    // Date cible : 1 juillet 2026 à minuit
+    const targetDate = new Date("July 1, 2026 00:00:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+            document.getElementById("countdown").innerHTML = "🎉 C'est le 1er juillet !";
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+            `${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
 <body class="home">
     <header>
         <nav>
@@ -30,6 +57,9 @@
         </nav>
     </header>
 
+
+
+
     <main>
         <section class="hero">
             <h2>Bienvenue chez Omega Development</h2>
@@ -39,6 +69,8 @@
 
             <a href="services.html" class="btn">Découvrez nos jeux</a>
         </section>
+
+            <div id="countdown" class="countdown"></div>
 
         <section class="features">
             <div class="container">
