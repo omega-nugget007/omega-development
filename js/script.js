@@ -1,4 +1,26 @@
-﻿// Navigation toggle for mobile
+// -----------------------------
+// ROBLOX OAUTH 2.0
+// -----------------------------
+const robloxLoginButton = document.getElementById('roblox-login');
+
+if (robloxLoginButton) {
+    robloxLoginButton.addEventListener('click', () => {
+        const clientId = "8404366583774934110"; // ⚠️ Mets ton vrai client_id
+        const redirectUri = encodeURIComponent("https://omega-development.onrender.com/oauth/roblox/callback");
+
+        const url =
+            "https://apis.roblox.com/oauth/v1/authorize"
+            + `?client_id=${clientId}`
+            + `&redirect_uri=${redirectUri}`
+            + "&response_type=code"
+            + "&scope=openid%20profile";
+
+        window.location.href = url;
+    });
+}
+
+
+
 const navSlide = () => {
     const burger = document.querySelector('.burger');
     const nav = document.querySelector('.nav-links');
@@ -197,3 +219,5 @@ style.textContent = `
 }
 `;
 document.head.appendChild(style);
+
+
