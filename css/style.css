@@ -1770,6 +1770,7 @@ body.services::before {
 /* ============================================
    Build A Night Club — theme néon
    S'ajoute à css/style.css, ne le remplace pas.
+   Image attendue : images/bnc-hero.png
    ============================================ */
 
 body.dcp-page {
@@ -1787,27 +1788,89 @@ body.dcp-page h4 {
     font-family: 'Manrope', 'Segoe UI', sans-serif;
 }
 
-/* Nav link actif, discret */
 body.dcp-page .nav-links a.active {
     color: #ff2ea6;
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero avec image de fond ---------- */
 .dcp-hero {
     position: relative;
     text-align: center;
-    padding: 6rem 1.5rem 5rem;
+    padding: 7rem 1.5rem 6rem;
     overflow: hidden;
+    isolation: isolate;
+    background:
+        linear-gradient(180deg, rgba(6, 2, 12, 0.35) 0%, rgba(8, 2, 16, 0.78) 60%, #0b0313 100%),
+        url('../images/bnc-hero.png') center 60% / cover no-repeat;
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .dcp-hero-glow {
     position: absolute;
     inset: -20% -10% auto -10%;
     height: 420px;
-    background: radial-gradient(circle, rgba(255, 46, 166, 0.35), transparent 60%);
+    background: radial-gradient(circle, rgba(255, 46, 166, 0.3), transparent 60%);
     filter: blur(10px);
     pointer-events: none;
     z-index: 0;
+}
+
+/* orbes lumineuses flottantes */
+.dcp-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+}
+
+.dcp-orb-pink {
+    width: 14px;
+    height: 14px;
+    left: 12%;
+    top: 30%;
+    background: #ff2ea6;
+    box-shadow: 0 0 18px 6px rgba(255, 46, 166, 0.8);
+    animation: dcpFloat 7s ease-in-out infinite;
+}
+
+.dcp-orb-green {
+    width: 10px;
+    height: 10px;
+    right: 16%;
+    top: 60%;
+    background: #39ff88;
+    box-shadow: 0 0 16px 6px rgba(57, 255, 136, 0.8);
+    animation: dcpFloat 9s ease-in-out infinite reverse;
+}
+
+@keyframes dcpFloat {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(18px, -26px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* ligne néon qui balaie le bas du hero */
+.dcp-scanline {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    bottom: 8%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #14e0ff, #ff2ea6, transparent);
+    background-size: 200% 100%;
+    opacity: 0.7;
+    animation: dcpScan 4s linear infinite;
+    z-index: 0;
+}
+
+@keyframes dcpScan {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .dcp-eyebrow {
@@ -1827,11 +1890,31 @@ body.dcp-page .nav-links a.active {
     line-height: 1.15;
     margin: 0 0 1.25rem;
     color: #ffffff;
-    text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.7),
-        0 0 18px #ff2ea6,
-        0 0 40px rgba(255, 46, 166, 0.6),
-        0 0 70px rgba(20, 224, 255, 0.35);
+    animation: dcpFlicker 6s infinite;
+}
+
+/* clignotement néon réaliste, alterne rose et vert comme l'enseigne */
+@keyframes dcpFlicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        opacity: 1;
+        text-shadow:
+            0 0 6px rgba(255, 255, 255, 0.75),
+            0 0 18px #ff2ea6,
+            0 0 40px rgba(255, 46, 166, 0.6),
+            0 0 70px rgba(20, 224, 255, 0.35);
+    }
+    20%, 24% {
+        opacity: 0.35;
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+    }
+    55% {
+        opacity: 1;
+        text-shadow:
+            0 0 6px rgba(255, 255, 255, 0.75),
+            0 0 18px #39ff88,
+            0 0 40px rgba(57, 255, 136, 0.55),
+            0 0 70px rgba(20, 224, 255, 0.3);
+    }
 }
 
 .dcp-hero p {
@@ -1839,8 +1922,9 @@ body.dcp-page .nav-links a.active {
     z-index: 1;
     max-width: 620px;
     margin: 0 auto;
-    color: #cdb8e8;
+    color: #e6d9f7;
     font-size: 1.05rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* ---------- Boutons ---------- */
@@ -1867,15 +1951,22 @@ body.dcp-page .nav-links a.active {
     border-radius: 999px;
     text-decoration: none;
     font-weight: 700;
-    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .dcp-btn-outline:hover {
     background: rgba(20, 224, 255, 0.12);
-    box-shadow: 0 0 16px rgba(20, 224, 255, 0.4);
+    box-shadow: 0 0 16px rgba(20, 224, 255, 0.5);
+    border-color: #39ff88;
+    color: #ffffff;
 }
 
 /* ---------- Section features ---------- */
+.dcp-features {
+    position: relative;
+    padding-top: 3rem;
+}
+
 .dcp-features h3 {
     text-align: center;
     color: #ffffff;
@@ -1889,12 +1980,39 @@ body.dcp-page .nav-links a.active {
     border: 1px solid rgba(255, 46, 166, 0.25);
     border-radius: 14px;
     padding: 1.75rem 1.5rem;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    animation: dcpCardPulse 5s ease-in-out infinite;
+}
+
+.dcp-card:nth-child(2) { animation-delay: 1.2s; }
+.dcp-card:nth-child(3) { animation-delay: 2.4s; }
+
+@keyframes dcpCardPulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(255, 46, 166, 0); }
+    50%      { box-shadow: 0 0 22px rgba(255, 46, 166, 0.18); }
 }
 
 .dcp-card:hover {
     border-color: rgba(20, 224, 255, 0.55);
-    transform: translateY(-4px);
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 26px rgba(20, 224, 255, 0.35);
+}
+
+/* fine ligne néon qui traverse le haut de la carte au survol */
+.dcp-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #14e0ff, #ff2ea6, transparent);
+    transition: left 0.6s ease;
+}
+
+.dcp-card:hover::before {
+    left: 100%;
 }
 
 .dcp-tag {
@@ -1925,7 +2043,11 @@ body.dcp-page .nav-links a.active {
 @media (prefers-reduced-motion: reduce) {
     .dcp-btn,
     .dcp-btn-outline,
-    .dcp-card {
+    .dcp-card,
+    .dcp-title,
+    .dcp-orb,
+    .dcp-scanline {
+        animation: none;
         transition: none;
     }
 }
@@ -1935,8 +2057,6 @@ a.dcp-btn-outline:focus-visible {
     outline: 2px solid #14e0ff;
     outline-offset: 3px;
 }
-
-
 
 
 
