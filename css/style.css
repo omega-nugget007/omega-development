@@ -1801,7 +1801,7 @@ body.dcp-page .nav-links a.active {
     isolation: isolate;
     background:
         linear-gradient(180deg, rgba(6, 2, 12, 0.35) 0%, rgba(8, 2, 16, 0.78) 60%, #0b0313 100%),
-        url('../images/bnc-hero.png') center 60% / cover no-repeat;
+        url('../css/bnc-hero.png') center 60% / cover no-repeat;
     min-height: 460px;
     display: flex;
     flex-direction: column;
