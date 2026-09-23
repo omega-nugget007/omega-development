@@ -1767,6 +1767,176 @@ body.services::before {
 }
 
 
+/* ============================================
+   Build A Night Club — theme néon
+   S'ajoute à css/style.css, ne le remplace pas.
+   ============================================ */
+
+body.dcp-page {
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255, 46, 166, 0.18), transparent 55%),
+        radial-gradient(ellipse at 85% 15%, rgba(20, 224, 255, 0.14), transparent 50%),
+        #0b0313;
+    color: #f2e9ff;
+}
+
+body.dcp-page main,
+body.dcp-page p,
+body.dcp-page h3,
+body.dcp-page h4 {
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+}
+
+/* Nav link actif, discret */
+body.dcp-page .nav-links a.active {
+    color: #ff2ea6;
+}
+
+/* ---------- Hero ---------- */
+.dcp-hero {
+    position: relative;
+    text-align: center;
+    padding: 6rem 1.5rem 5rem;
+    overflow: hidden;
+}
+
+.dcp-hero-glow {
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 420px;
+    background: radial-gradient(circle, rgba(255, 46, 166, 0.35), transparent 60%);
+    filter: blur(10px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.dcp-eyebrow {
+    position: relative;
+    z-index: 1;
+    color: #14e0ff;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.dcp-title {
+    position: relative;
+    z-index: 1;
+    font-family: 'Monoton', cursive;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+    color: #ffffff;
+    text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.7),
+        0 0 18px #ff2ea6,
+        0 0 40px rgba(255, 46, 166, 0.6),
+        0 0 70px rgba(20, 224, 255, 0.35);
+}
+
+.dcp-hero p {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+    margin: 0 auto;
+    color: #cdb8e8;
+    font-size: 1.05rem;
+}
+
+/* ---------- Boutons ---------- */
+.dcp-btn {
+    background: linear-gradient(90deg, #ff2ea6, #14e0ff);
+    color: #0b0313;
+    font-weight: 800;
+    border: none;
+    box-shadow: 0 0 22px rgba(255, 46, 166, 0.55);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dcp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(20, 224, 255, 0.7);
+}
+
+.dcp-btn-outline {
+    display: inline-block;
+    border: 1px solid rgba(20, 224, 255, 0.6);
+    color: #14e0ff;
+    background: transparent;
+    padding: 0.55em 1.3em;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dcp-btn-outline:hover {
+    background: rgba(20, 224, 255, 0.12);
+    box-shadow: 0 0 16px rgba(20, 224, 255, 0.4);
+}
+
+/* ---------- Section features ---------- */
+.dcp-features h3 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.7rem;
+    margin-bottom: 2.5rem;
+}
+
+.dcp-card {
+    position: relative;
+    background: rgba(23, 10, 36, 0.75);
+    border: 1px solid rgba(255, 46, 166, 0.25);
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.dcp-card:hover {
+    border-color: rgba(20, 224, 255, 0.55);
+    transform: translateY(-4px);
+}
+
+.dcp-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #ffcf4d;
+    border: 1px solid rgba(255, 207, 77, 0.4);
+    border-radius: 999px;
+    padding: 0.2em 0.75em;
+    margin-bottom: 0.9rem;
+}
+
+.dcp-card h4 {
+    color: #ffffff;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.dcp-card p {
+    color: #c7b6de;
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+/* ---------- Accessibilité ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .dcp-btn,
+    .dcp-btn-outline,
+    .dcp-card {
+        transition: none;
+    }
+}
+
+a.dcp-btn:focus-visible,
+a.dcp-btn-outline:focus-visible {
+    outline: 2px solid #14e0ff;
+    outline-offset: 3px;
+}
+
+
 
 
 
